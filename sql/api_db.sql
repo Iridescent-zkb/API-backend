@@ -1,5 +1,10 @@
+-- 创建库
+create database if not exists api_db;
+
+-- 切换库
+use api_db;
 -- auto-generated definition
-create table user
+create table if not exists user
 (
     id           bigint auto_increment comment 'id'
         primary key,
@@ -9,6 +14,8 @@ create table user
     gender       tinyint                                null comment '性别',
     userRole     varchar(256) default 'user'            not null comment '用户角色：user / admin',
     userPassword varchar(512)                           not null comment '密码',
+    `accessKey` varchar(512) not null comment 'accessKey',
+    `secretKey` varchar(512) not null comment 'secretKey',
     createTime   datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
     updateTime   datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     isDelete     tinyint      default 0                 not null comment '是否删除',
@@ -16,6 +23,9 @@ create table user
         unique (userAccount)
 )
     comment '用户';
+
+1,bilibili,yupi,https://files.codelife.cc/website/bilibili2.svg,,admin,8c2fdcd8a49a6e7268dbf19cf20310cc,2024-01-20 17:38:10,2024-01-21 00:45:54,0
+
 
 -- auto-generated definition
 create table post

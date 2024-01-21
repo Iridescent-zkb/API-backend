@@ -2,11 +2,9 @@ package com.sunshine.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sunshine.apiclientsdk.client.ApiClient;
 import com.sunshine.project.annotation.AuthCheck;
-import com.sunshine.project.common.BaseResponse;
-import com.sunshine.project.common.DeleteRequest;
-import com.sunshine.project.common.ErrorCode;
-import com.sunshine.project.common.ResultUtils;
+import com.sunshine.project.common.*;
 import com.sunshine.project.constant.CommonConstant;
 import com.sunshine.project.exception.BusinessException;
 import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
@@ -16,6 +14,7 @@ import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
 import com.sunshine.project.model.entity.InterfaceInfo;
 import com.sunshine.project.model.entity.User;
 import com.sunshine.project.model.entity.InterfaceInfo;
+import com.sunshine.project.model.enums.InterfaceInfoStatusEnum;
 import com.sunshine.project.service.InterfaceInfoService;
 import com.sunshine.project.service.UserService;
 import com.sunshine.project.service.InterfaceInfoService;
@@ -29,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 帖子接口
+ * 接口管理
  *
  */
 @RestController
@@ -42,6 +41,9 @@ public class InterfaceInfoController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private ApiClient apiClient;
 
     // region 增删改查
 
@@ -197,5 +199,81 @@ public class InterfaceInfoController {
     }
 
 
+    /**
+     * 发布
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                     HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 1.校验该接口是否存在
+        // 获取idRequest对象的id属性值
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            // 抛出业务异常，表示未找到数据
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 2.判断该接口是否可以调用
+        // 创建一个User对象(这里先模拟一下，搞个假数据)
+        com.sunshine.apiclientsdk.model.User user = new com.sunshine.apiclientsdk.model.User();
+        user.setUsername("test");
+        // 通过apiClient的getUsernameByPost方法传入user对象，并将返回的username赋值给username变量
+        String username = apiClient.getUserNameByPost(user);
+        if (StringUtils.isBlank(username)) {
+            // 抛出系统错误的业务异常，表示系统内部异常，并附带错误信息"接口验证失败"
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口验证失败");
+        }
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        // 设置interfaceInfo的id属性为id
+        interfaceInfo.setId(id);
+        // 3.修改接口数据库中的状态字段为 上线
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        // 调用interfaceInfoService的updateById方法，传入interfaceInfo对象，并将返回的结果赋值给result变量
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        // 返回一个成功的响应，响应体中携带result值
+        return ResultUtils.success(result);
+
+    }
+
+    /**
+     * 下线
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                     HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 1.校验该接口是否存在
+        // 获取idRequest对象的id属性值
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            // 抛出业务异常，表示未找到数据
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        // 设置interfaceInfo的id属性为id
+        interfaceInfo.setId(id);
+        // 2.修改接口数据库中的状态字段为下线
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        // 调用interfaceInfoService的updateById方法，传入interfaceInfo对象，并将返回的结果赋值给result变量
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        // 返回一个成功的响应，响应体中携带result值
+        return ResultUtils.success(result);
+    }
 
 }

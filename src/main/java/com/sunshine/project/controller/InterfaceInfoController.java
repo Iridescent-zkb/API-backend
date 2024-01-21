@@ -2,15 +2,14 @@ package com.sunshine.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import com.sunshine.apiclientsdk.client.ApiClient;
 import com.sunshine.project.annotation.AuthCheck;
 import com.sunshine.project.common.*;
 import com.sunshine.project.constant.CommonConstant;
 import com.sunshine.project.exception.BusinessException;
+import com.sunshine.project.model.dto.interfaceInfo.*;
 import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
-import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoAddRequest;
-import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
-import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
 import com.sunshine.project.model.entity.InterfaceInfo;
 import com.sunshine.project.model.entity.User;
 import com.sunshine.project.model.entity.InterfaceInfo;
@@ -274,6 +273,47 @@ public class InterfaceInfoController {
         boolean result = interfaceInfoService.updateById(interfaceInfo);
         // 返回一个成功的响应，响应体中携带result值
         return ResultUtils.success(result);
+    }
+
+
+
+    /**
+     * 测试调用
+     *
+     * @param interfaceInfoInvokeRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest,
+                                                    HttpServletRequest request) {
+        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = interfaceInfoInvokeRequest.getId();
+        String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        if (oldInterfaceInfo.getStatus() == InterfaceInfoStatusEnum.OFFLINE.getValue()) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口已关闭");
+        }
+        // 获取当前登录用户的ak和sk，这样相当于用户自己的这个身份去调用，
+        // 也不会担心它刷接口，因为知道是谁刷了这个接口，会比较安全
+        User loginUser = userService.getLoginUser(request);
+        String accessKey = loginUser.getAccessKey();
+        String secretKey = loginUser.getSecretKey();
+        //创建一个临时的ApiClient对象，并传入ak和sk
+        ApiClient tempClient = new ApiClient(accessKey, secretKey);
+        // 我们只需要进行测试调用，所以我们需要解析传递过来的参数。
+        Gson gson = new Gson();
+        // 将用户请求参数转换为com.sunshine.apiclientsdk.model.User对象
+        com.sunshine.apiclientsdk.model.User user = gson.fromJson(userRequestParams, com.sunshine.apiclientsdk.model.User.class);
+        // 调用ApiClient的getUsernameByPost方法，传入用户对象，获取用户名
+        String usernameByPost = tempClient.getUserNameByPost(user);
+        // 返回成功响应，并包含调用结果
+        return ResultUtils.success(usernameByPost);
     }
 
 }

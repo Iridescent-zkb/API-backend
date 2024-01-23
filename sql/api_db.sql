@@ -24,7 +24,7 @@ create table if not exists user
 )
     comment '用户';
 
-1,bilibili,yupi,https://files.codelife.cc/website/bilibili2.svg,,admin,8c2fdcd8a49a6e7268dbf19cf20310cc,2024-01-20 17:38:10,2024-01-21 00:45:54,0
+# 1,bilibili,yupi,https://files.codelife.cc/website/bilibili2.svg,,admin,8c2fdcd8a49a6e7268dbf19cf20310cc,2024-01-20 17:38:10,2024-01-21 00:45:54,0
 
 
 -- auto-generated definition
@@ -91,3 +91,18 @@ insert into api_db.`interface_info` (`name`, `description`, `url`, `requestHeade
 insert into api_db.`interface_info` (`name`, `description`, `url`, `requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('张乐驹', '韩立果', 'www.dong-harvey.net', '丁鑫磊', '萧烨霖', 0, '宋鹏煊', 7693);
 insert into api_db.`interface_info` (`name`, `description`, `url`, `requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('沈越泽', '杨君浩', 'www.jammie-howe.co', '郭正豪', '秦文', 0, '董君浩', 8);
 insert into api_db.`interface_info` (`name`, `description`, `url`, `requestHeader`, `responseHeader`, `status`, `method`, `userId`) values ('杜旭尧', '邱鹭洋', 'www.kurtis-frami.info', '曾煜城', '顾楷瑞', 0, '范苑博', 5569776);
+
+
+-- 用户调用接口关系表
+create table if not exists `user_interface_info`
+(
+    `id` bigint not null auto_increment comment '主键' primary key,
+    `userId` bigint not null comment '调用用户 id',
+    `interfaceInfoId` bigint not null comment '接口 id',
+    `totalNum` int default 0 not null comment '总调用次数',
+    `leftNum` int default 0 not null comment '剩余调用次数',
+    `status` int default 0 not null comment '0-正常，1-禁用',
+    `createTime` datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    `updateTime` datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    `isDelete` tinyint default 0 not null comment '是否删除(0-未删, 1-已删)'
+) comment '用户调用接口关系';

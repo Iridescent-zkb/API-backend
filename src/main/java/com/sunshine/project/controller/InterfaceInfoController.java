@@ -8,15 +8,15 @@ import com.sunshine.project.annotation.AuthCheck;
 import com.sunshine.project.common.*;
 import com.sunshine.project.constant.CommonConstant;
 import com.sunshine.project.exception.BusinessException;
-import com.sunshine.project.model.dto.interfaceInfo.*;
+import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoAddRequest;
+import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoInvokeRequest;
 import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
+import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
 import com.sunshine.project.model.entity.InterfaceInfo;
 import com.sunshine.project.model.entity.User;
-import com.sunshine.project.model.entity.InterfaceInfo;
 import com.sunshine.project.model.enums.InterfaceInfoStatusEnum;
 import com.sunshine.project.service.InterfaceInfoService;
 import com.sunshine.project.service.UserService;
-import com.sunshine.project.service.InterfaceInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -44,7 +44,7 @@ public class InterfaceInfoController {
     @Resource
     private ApiClient apiClient;
 
-    // region 增删改查
+
 
     /**
      * 创建
@@ -68,8 +68,8 @@ public class InterfaceInfoController {
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
-        long newinterfaceInfoId = interfaceInfo.getId();
-        return ResultUtils.success(newinterfaceInfoId);
+        long newInterfaceInfoId = interfaceInfo.getId();
+        return ResultUtils.success(newInterfaceInfoId);
     }
 
     /**

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
 import com.sunshine.apiclientsdk.client.ApiClient;
+import com.sunshine.apicommon.model.entity.InterfaceInfo;
+import com.sunshine.apicommon.model.entity.User;
 import com.sunshine.project.annotation.AuthCheck;
 import com.sunshine.project.common.*;
 import com.sunshine.project.constant.CommonConstant;
@@ -12,8 +14,7 @@ import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoAddRequest;
 import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoInvokeRequest;
 import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
 import com.sunshine.project.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
-import com.sunshine.project.model.entity.InterfaceInfo;
-import com.sunshine.project.model.entity.User;
+
 import com.sunshine.project.model.enums.InterfaceInfoStatusEnum;
 import com.sunshine.project.service.InterfaceInfoService;
 import com.sunshine.project.service.UserService;

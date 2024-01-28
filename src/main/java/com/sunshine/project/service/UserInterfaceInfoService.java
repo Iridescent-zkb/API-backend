@@ -1,12 +1,12 @@
 package com.sunshine.project.service;
 
-
-import com.sunshine.project.model.entity.UserInterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sunshine.apicommon.model.entity.UserInterfaceInfo;
 
 /**
-* @description 针对表【user_interface_info(用户调用接口关系)】的数据库操作Service
-*/
+ * 用户接口信息服务
+ *
+ */
 public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
 
     void validUserInterfaceInfo(UserInterfaceInfo userInterfaceInfo, boolean add);

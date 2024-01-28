@@ -1,6 +1,6 @@
 package com.sunshine.project.service;
 
-import com.sunshine.project.model.entity.User;
+import com.sunshine.apicommon.model.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

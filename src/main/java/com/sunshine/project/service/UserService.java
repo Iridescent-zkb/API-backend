@@ -2,7 +2,7 @@ package com.sunshine.project.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.sunshine.project.model.entity.User;
+import com.sunshine.apicommon.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 

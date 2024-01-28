@@ -2,6 +2,7 @@ package com.sunshine.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sunshine.apicommon.model.entity.User;
 import com.sunshine.project.annotation.AuthCheck;
 import com.sunshine.project.common.BaseResponse;
 import com.sunshine.project.common.DeleteRequest;
@@ -13,7 +14,6 @@ import com.sunshine.project.model.dto.post.PostAddRequest;
 import com.sunshine.project.model.dto.post.PostQueryRequest;
 import com.sunshine.project.model.dto.post.PostUpdateRequest;
 import com.sunshine.project.model.entity.Post;
-import com.sunshine.project.model.entity.User;
 import com.sunshine.project.service.PostService;
 import com.sunshine.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;

@@ -2,10 +2,9 @@ package com.sunshine.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sunshine.apicommon.model.entity.UserInterfaceInfo;
 import com.sunshine.project.common.ErrorCode;
 import com.sunshine.project.exception.BusinessException;
-import com.sunshine.project.model.entity.InterfaceInfo;
-import com.sunshine.project.model.entity.UserInterfaceInfo;
 import com.sunshine.project.service.UserInterfaceInfoService;
 import com.sunshine.project.mapper.UserInterfaceInfoMapper;
 import org.apache.commons.lang3.StringUtils;

@@ -1,7 +1,7 @@
 package com.sunshine.project.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sunshine.project.model.entity.InterfaceInfo;
+import com.sunshine.apicommon.model.entity.InterfaceInfo;
 
 
 /**

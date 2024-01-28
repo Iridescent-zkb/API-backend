@@ -3,13 +3,14 @@ package com.sunshine.project.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
+import com.sunshine.apicommon.model.entity.User;
 import com.sunshine.project.common.BaseResponse;
 import com.sunshine.project.common.DeleteRequest;
 import com.sunshine.project.common.ErrorCode;
 import com.sunshine.project.common.ResultUtils;
 import com.sunshine.project.exception.BusinessException;
 import com.sunshine.project.model.dto.user.*;
-import com.sunshine.project.model.entity.User;
+
 import com.sunshine.project.model.vo.UserVO;
 import com.sunshine.project.service.UserService;
 import org.apache.commons.lang3.StringUtils;

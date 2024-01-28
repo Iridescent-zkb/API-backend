@@ -72,7 +72,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if (Long.parseLong(nonce) > 10000) {
             return handleNoAuth(response);
         }
-        // 4.校验时间戳与当前时间的差距,后续实现
+        // 4.校验时间戳与当前时间的差距
         // 首先,获取当前时间的时间戳,以秒为单位
         // System.currentTimeMillis()返回当前时间的毫秒数，除以1000后得到当前时间的秒数。
         Long currentTime = System.currentTimeMillis() / 1000;
